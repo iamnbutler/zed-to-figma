@@ -1,0 +1,23 @@
+{
+  "name": "zed-to-figma",
+  "author": "Nate Butler <iamnbutler@gmail.com>",
+  "dependencies": {
+    "@create-figma-plugin/utilities": "^3.2.0"
+  },
+  "devDependencies": {
+    "@create-figma-plugin/build": "^3.2.0",
+    "@create-figma-plugin/tsconfig": "^3.2.0",
+    "@figma/plugin-typings": "1.90.0",
+    "typescript": ">=4"
+  },
+  "scripts": {
+    "build": "build-figma-plugin --typecheck --minify",
+    "watch": "build-figma-plugin --typecheck --watch"
+  },
+  "figma-plugin": {
+    "editorType": ["figma"],
+    "id": "zed-to-figma",
+    "name": "Zed to Figma",
+    "main": "src/main.ts"
+  }
+}
