@@ -12,6 +12,7 @@ export type SyntaxKey =
   | "emphasis.strong"
   | "enum"
   | "function"
+  | "function.builtin"
   | "hint"
   | "keyword"
   | "label"
@@ -47,7 +48,7 @@ export type SyntaxStyle = {
   font_weight: number | null;
 };
 
-export type Syntax = Record<SyntaxKey, SyntaxStyle>;
+export type Syntax = Partial<Record<SyntaxKey, SyntaxStyle>>;
 
 export type Theme = {
   foreground: string;

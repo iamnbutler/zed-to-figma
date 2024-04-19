@@ -1,4 +1,4 @@
-import { SyntaxKey } from "./themes";
+import { SyntaxKey, SyntaxStyle } from "./themes";
 import { themes } from "./themes";
 
 // == SET UP & PRELOAD FONTS ==
@@ -63,24 +63,28 @@ async function renderTextLines(hBuffer: HighlightableBuffer, root: FrameNode) {
       textNode.characters = node.text;
       textNode.fontSize = 16;
 
-      if (node.highlight && themes.one_dark.syntax[node.highlight]) {
-        const style = themes.one_dark.syntax[node.highlight];
+      // Initialize with default style, assuming text color is the theme's foreground.
+      let style: SyntaxStyle = {
+        color: themes.gruvbox_dark_hard.foreground,
+        font_style: null,
+        font_weight: null,
+      };
 
-        textNode.fills = [{ type: "SOLID", color: hexToRgbFigma(style.color) }];
-
-        textNode.opacity = hexToOpacity(style.color);
-
-        const fontConfig = fontStyle(style);
-        await figma.loadFontAsync(fontConfig);
-        textNode.fontName = fontConfig;
-      } else {
-        await figma.loadFontAsync(FontStyles.Regular);
-        textNode.fontName = FontStyles.Regular;
-        textNode.fills = [
-          { type: "SOLID", color: hexToRgbFigma(themes.one_dark.foreground) },
-        ];
-        textNode.opacity = 1;
+      // Check if a specific style is defined for the node’s highlight.
+      if (node.highlight && themes.gruvbox_dark_hard.syntax[node.highlight]) {
+        // If so, override the default style with the specific one.
+        style = {
+          ...style,
+          ...themes.gruvbox_dark_hard.syntax[node.highlight],
+        };
       }
+
+      textNode.fills = [{ type: "SOLID", color: hexToRgbFigma(style.color) }];
+      textNode.opacity = hexToOpacity(style.color);
+
+      const fontConfig = fontStyle(style);
+      await figma.loadFontAsync(fontConfig);
+      textNode.fontName = fontConfig;
 
       lineFrame.appendChild(textNode);
     }
@@ -103,7 +107,10 @@ export default async function () {
     root.y = 0;
     root.resize(1, 1);
     root.fills = [
-      { type: "SOLID", color: hexToRgbFigma(themes.one_dark.background) },
+      {
+        type: "SOLID",
+        color: hexToRgbFigma(themes.gruvbox_dark_hard.background),
+      },
     ];
     root.layoutMode = "VERTICAL";
     root.counterAxisSizingMode = "AUTO";
