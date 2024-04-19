@@ -22,6 +22,8 @@ Some obvious improvements that could be made:
 
 - [ ] Fixing output indentation and spacing.
 - [ ] Add a basic UI to enable some of the latter features.
+- [ ] Add option for line numbers
+- [ ] Enable modifying line height, font size, etc.
 - [ ] Allowing dynamic input of JSON strings.
 - [ ] Enabling theme selection.
 - [ ] Allow passing a range of desired editable lines, flattening the rest to improve performance
