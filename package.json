@@ -1,6 +1,8 @@
 {
   "name": "zed-to-figma",
+  "version": "0.1.0",
   "author": "Nate Butler <iamnbutler@gmail.com>",
+  "license": "MIT",
   "dependencies": {
     "@create-figma-plugin/utilities": "^3.2.0"
   },
