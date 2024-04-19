@@ -1,3 +1,4 @@
+import { gruvbox_dark_hard } from "./gruvbox_dark_hard";
 import { one_dark } from "./one_dark";
 
 export type SyntaxKey =
@@ -58,4 +59,5 @@ export type Theme = {
 
 export const themes = {
   one_dark,
+  gruvbox_dark_hard,
 };
