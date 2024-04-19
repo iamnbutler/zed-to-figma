@@ -2,6 +2,8 @@
 
 Render a editable, syntax-highlighted code block in Figma via Zed's `copy highlight json` command.
 
+![CleanShot - 2024-04-19 at 10 39 44@2x](https://github.com/iamnbutler/zed-to-figma/assets/1714999/d80c613b-b46e-4571-8a22-f769cf60e6ba)
+
 ## Usage
 
 1. Run `pnpm install` - You may need to ensure you have node 20 or run `nvm use 20`.
