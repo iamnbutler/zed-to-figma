@@ -5,9 +5,18 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@create-figma-plugin/ui':
+    specifier: ^3.2.0
+    version: 3.2.0(preact@10.20.2)
   '@create-figma-plugin/utilities':
     specifier: ^3.2.0
     version: 3.2.0
+  preact:
+    specifier: ^10.20.2
+    version: 10.20.2
+  react:
+    specifier: ^18.2.0
+    version: 18.2.0
 
 devDependencies:
   '@create-figma-plugin/build':
@@ -65,6 +74,16 @@ packages:
   /@create-figma-plugin/tsconfig@3.2.0:
     resolution: {integrity: sha512-gdhq2uzDbzu/PMoWwKtA3EmVucKkqkCiQg1esJeyF3u/EtzYXoucAHazB9kXmzvf8UlZW1FS9QI3MQuuIzy8jg==}
     dev: true
+
+  /@create-figma-plugin/ui@3.2.0(preact@10.20.2):
+    resolution: {integrity: sha512-E0is67aaoVECDgSMAlkp584wI24yglENH6M4OIJwDMbHBXidIbtAk9RIbUDr0gC+2NWNRLpIyFQH6LnZcqO+0A==}
+    engines: {node: '>=20'}
+    peerDependencies:
+      preact: '>=10'
+    dependencies:
+      '@create-figma-plugin/utilities': 3.2.0
+      preact: 10.20.2
+    dev: false
 
   /@create-figma-plugin/utilities@3.2.0:
     resolution: {integrity: sha512-+5JddDqI6XjVJs0EqgLd+6B9ukjhHFEBesqPI/e0okqS+Ay7Gt3xsD0vMrZjVYfJcmRAprgJhdGBGJZjOZiQIA==}
@@ -889,6 +908,10 @@ packages:
       '@pkgjs/parseargs': 0.11.0
     dev: true
 
+  /js-tokens@4.0.0:
+    resolution: {integrity: sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==}
+    dev: false
+
   /kleur@4.1.5:
     resolution: {integrity: sha512-o+NO+8WrRiQEE4/7nwRJhN1HWpVmJm511pBHUxPLtp0BUISzlBplORYSmTclCnJvQq2tKu/sgl3xVpkc7ZWuQQ==}
     engines: {node: '>=6'}
@@ -922,6 +945,13 @@ packages:
   /lodash.uniq@4.5.0:
     resolution: {integrity: sha512-xfBaXQd9ryd9dlSDvnvI0lvxfLJlYAZzXomUYzLKtUeOQvOP5piqAWuGtrhWeqaXK9hhoM/iyJc5AV+XfsX3HQ==}
     dev: true
+
+  /loose-envify@1.4.0:
+    resolution: {integrity: sha512-lyuxPGr/Wfhrlem2CL/UcnUc1zcqKAImBDzukY7Y5F/yQiNdko6+fRLevlw1HgMySw7f611UIY408EtxRSoK3Q==}
+    hasBin: true
+    dependencies:
+      js-tokens: 4.0.0
+    dev: false
 
   /lru-cache@10.2.0:
     resolution: {integrity: sha512-2bIM8x+VAf6JT4bKAljS1qUWgMsqZRPGJS6FSahIMPVvctcNhyVp7AJu7quxOW9jwkryBReKZY5tY5JYv2n/7Q==}
@@ -1403,9 +1433,20 @@ packages:
       source-map-js: 1.2.0
     dev: true
 
+  /preact@10.20.2:
+    resolution: {integrity: sha512-S1d1ernz3KQ+Y2awUxKakpfOg2CEmJmwOP+6igPx6dgr6pgDvenqYviyokWso2rhHvGtTlWWnJDa7RaPbQerTg==}
+    dev: false
+
   /queue-microtask@1.2.3:
     resolution: {integrity: sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==}
     dev: true
+
+  /react@18.2.0:
+    resolution: {integrity: sha512-/3IjMdb2L9QbBdWiW5e3P2/npwMBaU9mHCSCUzNln0ZCYbcfTsGbTJrU/kGemdH2IWmB2ioZ+zkxtmq6g09fGQ==}
+    engines: {node: '>=0.10.0'}
+    dependencies:
+      loose-envify: 1.4.0
+    dev: false
 
   /readdirp@3.6.0:
     resolution: {integrity: sha512-hOS089on8RduqdbhvQ5Z37A0ESjsqz6qnRcffsMU3495FuTdqSm+7bhJ29JvIOsBDEEnan5DPu9t3To9VRlMzA==}

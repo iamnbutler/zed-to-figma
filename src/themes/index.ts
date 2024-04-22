@@ -57,7 +57,16 @@ export type Theme = {
   syntax: Syntax;
 };
 
-export const themes = {
+export const theme_names = ["one_dark", "gruvbox_dark_hard"] as const;
+
+export const all_theme_names: ThemeName[] = theme_names.map(
+  (name) => name,
+) as ThemeName[];
+
+export type ThemeName = (typeof theme_names)[number];
+export type Themes = Record<ThemeName, Theme>;
+
+export const themes: Themes = {
   one_dark,
   gruvbox_dark_hard,
 };
