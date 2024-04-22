@@ -56,7 +56,27 @@ function hexToOpacity(hex: string): number {
 
 // == RENDER TEXT LINES ==
 
-async function renderTextLines(hBuffer: HighlightableBuffer, root: FrameNode) {
+function renderTextLines(root: FrameNode, data: PluginSettings) {
+  const theme = themes[data.theme];
+  // This should have an error state and not be cast like this.
+  const hBuffer = JSON.parse(data.codeToHighlight) as HighlightableBuffer;
+
+  root.name = "Root";
+  root.x = 0;
+  root.y = 0;
+  root.resize(1, 1);
+  root.fills = [
+    {
+      type: "SOLID",
+      color: hexToRgbFigma(theme.background),
+    },
+  ];
+  root.layoutMode = "VERTICAL";
+  root.counterAxisSizingMode = "AUTO";
+  root.primaryAxisSizingMode = "AUTO";
+  root.verticalPadding = 16;
+  root.horizontalPadding = 16;
+
   for (const lineNodes of hBuffer) {
     const lineFrame = figma.createFrame();
     lineFrame.layoutMode = "HORIZONTAL";
@@ -68,22 +88,22 @@ async function renderTextLines(hBuffer: HighlightableBuffer, root: FrameNode) {
     for (const node of lineNodes) {
       const textNode = figma.createText();
       textNode.characters = node.text;
-      textNode.fontSize = 14;
-      textNode.lineHeight = { value: 20, unit: "PIXELS" };
+      textNode.fontSize = data.fontSize;
+      textNode.lineHeight = { value: data.lineHeight, unit: "PIXELS" };
 
       // Initialize with default style, assuming text color is the theme's foreground.
       let style: SyntaxStyle = {
-        color: themes.gruvbox_dark_hard.foreground,
+        color: theme.foreground,
         font_style: null,
         font_weight: null,
       };
 
       // Check if a specific style is defined for the node’s highlight.
-      if (node.highlight && themes.gruvbox_dark_hard.syntax[node.highlight]) {
+      if (node.highlight && theme.syntax[node.highlight]) {
         // If so, override the default style with the specific one.
         style = {
           ...style,
-          ...themes.gruvbox_dark_hard.syntax[node.highlight],
+          ...theme.syntax[node.highlight],
         };
       }
 
@@ -91,7 +111,7 @@ async function renderTextLines(hBuffer: HighlightableBuffer, root: FrameNode) {
       textNode.opacity = hexToOpacity(style.color);
 
       const fontConfig = fontStyle(style);
-      await figma.loadFontAsync(fontConfig);
+      figma.loadFontAsync(fontConfig);
       textNode.fontName = fontConfig;
 
       lineFrame.appendChild(textNode);
@@ -106,6 +126,7 @@ export type PluginSettings = {
   lineHeight: number;
   theme: ThemeName;
   lineNumbers: boolean;
+  startLineNumber: number;
   editable: boolean;
   startEditableLine: number | null;
   endEditableLine: number | null;
@@ -114,17 +135,13 @@ export type PluginSettings = {
 
 // == RUN THE APP ==
 
-type SettingsResponse = {
-  settingsKey: string;
-  settings: PluginSettings | {};
-};
-
 export const DEFAULT_SETTINGS: PluginSettings = {
   fontSize: 14,
   lineHeight: 20,
   theme: "gruvbox_dark_hard",
   lineNumbers: true,
   editable: true,
+  startLineNumber: 1,
   startEditableLine: null,
   endEditableLine: null,
   codeToHighlight: "",
@@ -157,46 +174,26 @@ export default function () {
   const options = { width: 320, height: 480 };
   const data: PluginSettings = initDefaultData();
 
+  preloadFontsForBuffer();
+
   showUI(options, data);
 
   function handleSubmit(data: PluginSettings) {
     console.log(data);
   }
-  once("SUBMIT", handleSubmit);
 
-  // try {
-  //   await preloadFontsForBuffer();
+  once("SUBMIT", (data) => {
+    const currentPage = figma.currentPage;
 
-  //   const currentPage = figma.currentPage;
+    const root = figma.createFrame();
 
-  //   const root = figma.createFrame();
-  //   root.name = "Root";
-  //   root.x = 0;
-  //   root.y = 0;
-  //   root.resize(1, 1);
-  //   root.fills = [
-  //     {
-  //       type: "SOLID",
-  //       color: hexToRgbFigma(themes.gruvbox_dark_hard.background),
-  //     },
-  //   ];
-  //   root.layoutMode = "VERTICAL";
-  //   root.counterAxisSizingMode = "AUTO";
-  //   root.primaryAxisSizingMode = "AUTO";
-  //   root.verticalPadding = 16;
-  //   root.horizontalPadding = 16;
+    renderTextLines(root, data);
 
-  //   await renderTextLines(static_json, root);
+    currentPage.appendChild(root);
+    figma.viewport.scrollAndZoomIntoView([root]);
 
-  //   currentPage.appendChild(root);
-  //   figma.viewport.scrollAndZoomIntoView([root]);
-  // } catch (error) {
-  //   console.error("Failed to load fonts or render text lines.", error);
-  //   figma.closePlugin(`Error: ${error || "Failed to execute plugin."}`);
-  //   return;
-  // }
-
-  // figma.closePlugin("Successfully rendered all lines.");
+    figma.closePlugin("Successfully rendered all lines.");
+  });
 }
 
 // == DEFINE A HIGHLIGHTABLE BUFFER ==

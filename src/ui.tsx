@@ -3,22 +3,18 @@ import {
   Container,
   Text,
   TextboxMultiline,
-  Dropdown,
   VerticalSpace,
   Columns,
   Stack,
+  Checkbox,
   Button,
 } from "@create-figma-plugin/ui";
 import { h } from "preact";
-import { ThemeName, all_theme_names, theme_names, themes } from "./themes";
-import { DEFAULT_SETTINGS, PluginSettings, saveData } from "./main";
+import { ThemeName, all_theme_names } from "./themes";
+import { DEFAULT_SETTINGS, PluginSettings } from "./main";
 import { useState, useEffect } from "preact/hooks";
 
-import {
-  emit,
-  loadSettingsAsync,
-  saveSettingsAsync,
-} from "@create-figma-plugin/utilities";
+import { emit } from "@create-figma-plugin/utilities";
 
 const toLabel = (name: string) =>
   name
@@ -33,10 +29,13 @@ function Plugin(props: PluginSettings) {
     ...props,
   };
 
-  const [theme, setTheme] = useState<ThemeName>(props.theme);
+  const [codeToHighlight, setCodeToHighlight] = useState("");
+  const [editable, setEditable] = useState(props.editable || false);
   const [fontSize, setFontSize] = useState(props.fontSize || 14); // Default font size
   const [lineHeight, setLineHeight] = useState(props.lineHeight || 20); // Default line height
-  const [codeToHighlight, setCodeToHighlight] = useState("");
+  const [startLineNumber, setStartLineNumber] = useState(props.startLineNumber);
+  const [theme, setTheme] = useState<ThemeName>(props.theme);
+
   const [settings, setSettings] = useState(props);
 
   useEffect(() => {
@@ -46,8 +45,10 @@ function Plugin(props: PluginSettings) {
       fontSize,
       lineHeight,
       codeToHighlight,
+      editable,
+      startLineNumber,
     });
-  }, [theme, fontSize, lineHeight, codeToHighlight]);
+  }, [theme, fontSize, lineHeight, codeToHighlight, editable, startLineNumber]);
 
   function handleClick() {
     emit("SUBMIT", settings);
@@ -80,42 +81,90 @@ function Plugin(props: PluginSettings) {
     setCodeToHighlight(target.value);
   };
 
+  const handleEditableChange = (e: Event) => {
+    const target = e.target as HTMLInputElement;
+    setEditable(target.checked);
+  };
+
+  const handleStartLineNumberChange = (e: Event) => {
+    const target = e.target as HTMLInputElement;
+    setStartLineNumber(Number(target.value));
+  };
+
   return (
     <Container space="medium" style={{ height: "100%" }}>
-      <Stack space="medium">
-        <select id="theme-select" value={theme} onChange={handleThemeChange}>
-          {themeOptions}
-        </select>
-        <Columns space="medium">
-          <Stack space="medium">
-            <Text>Font Size</Text>
-            <input
-              type="number"
-              value={fontSize}
-              onChange={handleFontSizeChange}
-              placeholder="Font Size"
-            />
-          </Stack>
-          <Stack space="medium">
-            <Text>Line Height</Text>
-            <input
-              type="number"
-              value={lineHeight}
-              onChange={handleLineHeightChange}
-              placeholder="Line Height"
-            />
-          </Stack>
-        </Columns>
+      <VerticalSpace space="medium" />
 
-        <TextboxMultiline
-          value={codeToHighlight}
-          variant="border"
-          placeholder="Add some text to highlight..."
-          onChange={handleCodeToHighlightChange}
-          grow
-        />
-        <Button onClick={handleClick}>Highlight!</Button>
+      <Stack space="small">
+        <Text>1. Open Zed</Text>
+        <Text>2. Select some text</Text>
+        <Text>{`3. CMD+SHIFT+P -> editor: copy highlight json`}</Text>
+        <Text>4. Paste the JSON below</Text>
       </Stack>
+
+      <VerticalSpace space="extraLarge" />
+      <select id="theme-select" value={theme} onChange={handleThemeChange}>
+        {themeOptions}
+      </select>
+      <VerticalSpace space="medium" />
+
+      <Columns space="medium">
+        <Stack space="medium">
+          <Text>Font Size</Text>
+          <input
+            type="number"
+            value={fontSize}
+            onChange={handleFontSizeChange}
+            placeholder="Font Size"
+          />
+        </Stack>
+        <Stack space="medium">
+          <Text>Line Height</Text>
+          <input
+            type="number"
+            value={lineHeight}
+            onChange={handleLineHeightChange}
+            placeholder="Line Height"
+          />
+        </Stack>
+      </Columns>
+      <VerticalSpace space="medium" />
+
+      <Text>Line Settings</Text>
+      <VerticalSpace space="medium" />
+
+      <Stack space="extraSmall">
+        <Text>Start Line Number</Text>
+        <input
+          type="number"
+          value={startLineNumber}
+          onChange={handleStartLineNumberChange}
+        />
+      </Stack>
+
+      <VerticalSpace space="medium" />
+
+      <Columns space="medium">
+        <Checkbox value={editable} onChange={handleEditableChange}>
+          <Text>Editable</Text>
+        </Checkbox>
+      </Columns>
+
+      <VerticalSpace space="medium" />
+
+      <TextboxMultiline
+        value={codeToHighlight}
+        variant="border"
+        placeholder="Add some text to highlight..."
+        onChange={handleCodeToHighlightChange}
+        grow
+      />
+
+      <VerticalSpace space="medium" />
+
+      <Button fullWidth onClick={handleClick}>
+        Highlight!
+      </Button>
     </Container>
   );
 }
