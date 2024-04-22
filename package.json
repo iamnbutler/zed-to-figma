@@ -4,7 +4,9 @@
   "author": "Nate Butler <iamnbutler@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "@create-figma-plugin/utilities": "^3.2.0"
+    "@create-figma-plugin/ui": "^3.2.0",
+    "@create-figma-plugin/utilities": "^3.2.0",
+    "preact": "^10.20.2"
   },
   "devDependencies": {
     "@create-figma-plugin/build": "^3.2.0",
@@ -20,6 +22,7 @@
     "editorType": ["figma"],
     "id": "zed-to-figma",
     "name": "Zed to Figma",
-    "main": "src/main.ts"
+    "main": "src/main.ts",
+    "ui": "src/ui.tsx"
   }
 }

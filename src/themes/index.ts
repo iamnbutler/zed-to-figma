@@ -1,3 +1,4 @@
+import { gruvbox_dark_hard } from "./gruvbox_dark_hard";
 import { one_dark } from "./one_dark";
 
 export type SyntaxKey =
@@ -12,6 +13,7 @@ export type SyntaxKey =
   | "emphasis.strong"
   | "enum"
   | "function"
+  | "function.builtin"
   | "hint"
   | "keyword"
   | "label"
@@ -47,7 +49,7 @@ export type SyntaxStyle = {
   font_weight: number | null;
 };
 
-export type Syntax = Record<SyntaxKey, SyntaxStyle>;
+export type Syntax = Partial<Record<SyntaxKey, SyntaxStyle>>;
 
 export type Theme = {
   foreground: string;
@@ -55,6 +57,16 @@ export type Theme = {
   syntax: Syntax;
 };
 
-export const themes = {
+export const theme_names = ["one_dark", "gruvbox_dark_hard"] as const;
+
+export const all_theme_names: ThemeName[] = theme_names.map(
+  (name) => name,
+) as ThemeName[];
+
+export type ThemeName = (typeof theme_names)[number];
+export type Themes = Record<ThemeName, Theme>;
+
+export const themes: Themes = {
   one_dark,
+  gruvbox_dark_hard,
 };
