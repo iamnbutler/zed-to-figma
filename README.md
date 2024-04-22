@@ -21,11 +21,11 @@ Feel free to contribute code to this project. I tend to need this on-and-off, so
 Some obvious improvements that could be made:
 
 - [ ] Fixing output indentation and spacing.
-- [ ] Add a basic UI to enable some of the latter features.
+- [x] Add a basic UI to enable some of the latter features.
 - [ ] Add option for line numbers
-- [ ] Enable modifying line height, font size, etc.
-- [ ] Allowing dynamic input of JSON strings.
-- [ ] Enabling theme selection.
+- [x] Enable modifying line height, font size, etc.
+- [x] Allowing dynamic input of JSON strings.
+- [x] Enabling theme selection.
 - [ ] Allow passing a range of desired editable lines, flattening the rest to improve performance
 - [ ] General performance improvements to improve the time it takes to render the code block
 - [ ] Extend the Zed CLI to allow running the `copy highlight json` command from the command line (removing the need to go into Zed at all)
